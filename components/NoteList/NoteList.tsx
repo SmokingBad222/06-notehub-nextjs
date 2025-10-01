@@ -1,20 +1,23 @@
-// components/NoteList/NoteList.tsx
+"use client";
 
-import { Note } from "@/lib/api";
+import type { Note } from "../../types/note";
 import NoteItem from "../NoteItem/NoteItem";
+import css from "./NoteList.module.css";
 
-type Props = {
+interface NoteListProps {
   notes: Note[];
-};
+  onDelete: (id: number) => void;
+}
 
-const NoteList = ({ notes }: Props) => {
+export default function NoteList({ notes, onDelete }: NoteListProps) {
+  if (notes.length === 0) return <p>No notes available</p>;
+
   return (
-    <ul>
+    <div className={css.list}>
       {notes.map((note) => (
-        <NoteItem key={note.id} item={note} />
+        <NoteItem key={note.id} note={note} onDelete={onDelete} />
       ))}
-    </ul>
+    </div>
   );
 }
 
-export default NoteList;
