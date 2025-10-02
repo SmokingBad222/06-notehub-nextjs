@@ -13,7 +13,12 @@ export default function Modal({ children, onClose }: ModalProps) {
   useEffect(() => {
     const esc = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     window.addEventListener('keydown', esc);
-    return () => window.removeEventListener('keydown', esc);
+    document.body.style.overflow = 'hidden'; // ✅ блокування скролу
+
+    return () => {
+      window.removeEventListener('keydown', esc);
+      document.body.style.overflow = ''; // ✅ відновлення скролу
+    };
   }, [onClose]);
 
   return createPortal(
@@ -25,4 +30,5 @@ export default function Modal({ children, onClose }: ModalProps) {
     document.body
   );
 }
+
 

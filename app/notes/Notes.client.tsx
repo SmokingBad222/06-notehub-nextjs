@@ -1,17 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient} from '@tanstack/react-query';
 import { useDebounce } from 'use-debounce';
 import { fetchNotes } from '../../lib/api';
-import type { Note} from '../../types/note';
-import { FetchNotesResponse } from '../../types/note'
+import type { FetchNotesResponse } from '../../lib/api';
 import SearchBox from '@/components/SearchBox/SearchBox';
 import Pagination from '@/components/Pagination/Pagination';
 import NoteList from '@/components/NoteList/NoteList';
 import NoteForm from '../../components/NoteForm/NoteForm';
 import Modal from '@/components/Modal/Modal';
 import css from './Notes.client.module.css';
+
 
 export default function NotesClient() {
   const [page, setPage] = useState(1);
@@ -21,10 +21,11 @@ export default function NotesClient() {
   const queryClient = useQueryClient();
 
   const { data, isLoading, isError, isFetching } = useQuery({
-  queryKey: ['notes', page, debouncedSearch],
-  queryFn: (): Promise<FetchNotesResponse> =>
-    fetchNotes({ page, perPage: 12, search: debouncedSearch }),
-});
+    queryKey: ['notes', page, debouncedSearch],
+    queryFn: (): Promise<FetchNotesResponse> =>
+      fetchNotes({ page, perPage: 12, search: debouncedSearch }),
+    placeholderData: (previous) => previous,  
+  });
 
   const handleCreated = () => {
     setIsOpen(false);
@@ -33,16 +34,7 @@ export default function NotesClient() {
 
   const handleSearchChange = (value: string) => {
     setSearch(value);
-    setPage(1); 
-  };
-
-  const handleDelete = async (id: number) => {
-    try {
-      await fetchNotes({}); 
-      queryClient.invalidateQueries({ queryKey: ['notes'] });
-    } catch (error) {
-      console.error(error);
-    }
+    setPage(1);
   };
 
   return (
@@ -64,7 +56,7 @@ export default function NotesClient() {
       {isLoading && <p>Loading...</p>}
       {isError && <p>Error loading notes</p>}
       {data?.notes?.length ? (
-        <NoteList notes={data.notes} onDelete={handleDelete} />
+        <NoteList notes={data.notes} />
       ) : (
         !isLoading && <p>No notes found</p>
       )}

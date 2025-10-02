@@ -29,19 +29,22 @@ export const fetchNotes = async (params: FetchNotesParams = {}): Promise<FetchNo
 };
 
 // Створити нотатку
-export const createNote = async (body: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>): Promise<Note> => {
+export const createNote = async (
+  body: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>
+): Promise<Note> => {
   const { data } = await api.post<Note>('/notes', body);
   return data;
 };
 
 // Видалити нотатку
-export const deleteNote = async (id: number): Promise<Note> => {
+export const deleteNote = async (id: string): Promise<Note> => {  // 🔥 number → string
   const { data } = await api.delete<Note>(`/notes/${id}`);
   return data;
 };
 
 // Отримати нотатку за id
-export const fetchNoteById = async (id: number): Promise<Note> => {
+export const fetchNoteById = async (id: string): Promise<Note> => { // 🔥 number → string
   const { data } = await api.get<Note>(`/notes/${id}`);
   return data;
 };
+

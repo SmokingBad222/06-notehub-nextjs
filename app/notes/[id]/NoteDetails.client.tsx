@@ -5,18 +5,18 @@ import { fetchNoteById } from "../../../lib/api";
 import type { Note } from "../../../types/note";
 
 type NoteDetailsClientProps = {
-  id: number;
+  id: string; 
 };
 
 export default function NoteDetailsClient({ id }: NoteDetailsClientProps) {
   const { data, isLoading, isError } = useQuery<Note>({
     queryKey: ["note", id],
     queryFn: () => fetchNoteById(id),
+    refetchOnMount: false, 
   });
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error loading note</p>;
-
   if (!data) return <p>No note found</p>;
 
   return (
@@ -27,3 +27,4 @@ export default function NoteDetailsClient({ id }: NoteDetailsClientProps) {
     </div>
   );
 }
+

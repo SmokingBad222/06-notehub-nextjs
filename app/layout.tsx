@@ -11,19 +11,19 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  // Для глобального layout ми не prefetch щось особливе.
   return (
     <html lang="en">
       <body>
-        <Header />
-        {/* TanStackProvider без dehydratedState — локальні сторінки підключатимуть свій prefetch */}
+        
         <TanStackProvider>
+          <Header />
           <main>{children}</main>
+          <Footer />
         </TanStackProvider>
-        <Footer />
       </body>
     </html>
   );
 }
+
 
 
