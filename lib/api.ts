@@ -19,7 +19,7 @@ export interface FetchNotesResponse {
   totalPages: number;
 }
 
-// Отримати список нотаток
+
 export const fetchNotes = async (params: FetchNotesParams = {}): Promise<FetchNotesResponse> => {
   const { data } = await api.get<FetchNotesResponse>('/notes', {
     params,
@@ -28,7 +28,7 @@ export const fetchNotes = async (params: FetchNotesParams = {}): Promise<FetchNo
   return data;
 };
 
-// Створити нотатку
+
 export const createNote = async (
   body: Omit<Note, 'id' | 'createdAt' | 'updatedAt'>
 ): Promise<Note> => {
@@ -36,13 +36,13 @@ export const createNote = async (
   return data;
 };
 
-// Видалити нотатку
+
 export const deleteNote = async (id: string): Promise<Note> => {  // 🔥 number → string
   const { data } = await api.delete<Note>(`/notes/${id}`);
   return data;
 };
 
-// Отримати нотатку за id
+
 export const fetchNoteById = async (id: string): Promise<Note> => { // 🔥 number → string
   const { data } = await api.get<Note>(`/notes/${id}`);
   return data;
