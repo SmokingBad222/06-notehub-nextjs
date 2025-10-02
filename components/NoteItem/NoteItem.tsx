@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 interface NoteItemProps {
   note: Note;
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => void;
 }
 
 export default function NoteItem({ note, onDelete }: NoteItemProps) {
